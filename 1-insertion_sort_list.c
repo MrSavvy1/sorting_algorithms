@@ -8,39 +8,39 @@
  * Return: void
  */
 
-void swap_nodes(listint_t *l1, listint_t *l2)
+void swap_nodes(listint_t **list, listint_t *l1, listint_t *l2)
 {
-	listint_t *temp = l1->prev;
-
 	if (l1 == l2)
 	{
 		return;
 	}
 
-        /* Update previous and next pointers */
-        if (l1->prev)
+	/* Update previous and next pointers */
+	if (l1->prev)
 	{
-		l1->prev->next = l1;
+		l1->prev->next = l2;
+	}
+	else
+	{
+		*list = l2;
 	}
 
 	if (l2->next)
 	{
-		l2->next->prev = l2;
+		l2->next->prev = l1;
 	}
 
 	/* Swap prev and next pointers */
-	l1->prev = l2->prev;
-	l1->prev = temp;
-
-	temp = l1->next;
 	l1->next = l2->next;
-	l2->next = temp;
+	l2->prev = l1->prev;
+	l1->prev = l2;
+	l2->next = l1;
 }
 
 /**
  * insertion_sort_list - doubly linked list of integers
  * in ascending order using insertion sort algorithm
- * @head:
+ * @list: pointe to the head of the list
  *
  * Return: void
  */
@@ -54,21 +54,15 @@ void insertion_sort_list(listint_t **list)
 		return;
 	}
 
-	while (new)
+	while (new != NULL)
 	{
-		listint_t *next = new->next;
-		listint_t *prev = new->prev;
+		listint_t *current = new;
 
-		while (prev && prev->n > new->n)
+		while (current->prev != NULL && current->n < current->prev->n)
 		{
-			swap_nodes(prev, new);
-			if (prev == *list)
-			{
-				*list = new;
-			}
+			swap_nodes(list, current->prev, current);
 			print_list(*list);
-			prev = prev->prev;
 		}
-		new = next;
+		new = new->next;
 	}
 }
