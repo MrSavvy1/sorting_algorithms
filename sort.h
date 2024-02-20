@@ -26,6 +26,6 @@ void insertion_sort_list(listint_t **list);
 void selection_sort(int *array, size_t size);
 void quick_sort(int *array, size_t size);
 
-void swap_nodes(struct listint_s **list1, struct listint_s **list2);
+void swap_nodes(listint_t *list1, listint_t *list2);
 
 #endif  /* SORT_H */

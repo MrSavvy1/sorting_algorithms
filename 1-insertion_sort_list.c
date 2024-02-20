@@ -1,38 +1,40 @@
 #include "sort.h"
 
 /**
- * swap_nodes - swaping the nodes
- * @l1: list 1
- * @l2: list 2
+ * swap_nodes - swaps two nodes in a doubly linked list
+ * @l1: list 1 pointer
+ * @l2: list 2 pointer
  *
  * Return: void
  */
 
-void swap_nodes(struct listint_s **l1, struct listint_s **l2)
+void swap_nodes(listint_t *l1, listint_t *l2)
 {
-	struct listint_s *temp = *l1;
-	*l1 = *l2;
-        *l2 = temp;
+	listint_t *temp = l1->prev;
+
+	if (l1 == l2)
+	{
+		return;
+	}
 
         /* Update previous and next pointers */
-        if ((*l1)->prev)
+        if (l1->prev)
 	{
-		(*l1)->prev->next = *l1;
+		l1->prev->next = l1;
 	}
 
-	if ((*l2)->next)
+	if (l2->next)
 	{
-		(*l2)->next->prev = *l2;
+		l2->next->prev = l2;
 	}
 
-	/* Swap prev and next pointers (if neccessary) */
-	temp = (*l1)->prev;
-	(*l1)->prev = (*l2)->prev;
-	(*l1)->prev = temp;
+	/* Swap prev and next pointers */
+	l1->prev = l2->prev;
+	l1->prev = temp;
 
-	temp = (*l1)->next;
-	(*l1)->next = (*l2)->next;
-	(*l2)->next = temp;
+	temp = l1->next;
+	l1->next = l2->next;
+	l2->next = temp;
 }
 
 /**
@@ -43,19 +45,30 @@ void swap_nodes(struct listint_s **l1, struct listint_s **l2)
  * Return: void
  */
 
-void insertion_sort_list(struct listint_s **head)
+void insertion_sort_list(listint_t **list)
 {
-	struct listint_s *new = (*head)->next;
+	listint_t *new = (*list)->next;
+
+	if (!list || !(*list) || !(*list)->next)
+	{
+		return;
+	}
 
 	while (new)
 	{
-		struct listint_s *prev = new->prev;
+		listint_t *next = new->next;
+		listint_t *prev = new->prev;
+
 		while (prev && prev->n > new->n)
 		{
-			swap_nodes(&prev, &new);
-			print_list(*head);
+			swap_nodes(prev, new);
+			if (prev == *list)
+			{
+				*list = new;
+			}
+			print_list(*list);
 			prev = prev->prev;
 		}
-		new = new->next;
+		new = next;
 	}
 }
