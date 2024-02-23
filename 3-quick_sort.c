@@ -4,7 +4,8 @@
  * lomu_swap - swaps two elements in an array
  * @m: first element to be swaped
  * @n: second element to be swapped
- *
+ * @size: array size
+ * @array: the array pointer
  * Return: void
  */
 
@@ -24,11 +25,11 @@ void lomu_swap(int *m, int *n, int *array, size_t size)
  * @array: the array index
  * @down: low
  * @up: high
- *
+ * @size: array size
  * Return: the pivot index
  */
 
-int lomu_partition(int *array, int down, int up)
+int lomu_partition(int *array, int down, int up, size_t size)
 {
 	int pivot = array[up];
 	int i = down - 1;
@@ -47,24 +48,21 @@ int lomu_partition(int *array, int down, int up)
 }
 
 /**
- * quick_sort_recusive - implements quick sort using
+ * quick_sort_recursive - implements quick sort using
  * Lomuto partition scheme
- * @array: --
- * @down: --
- * @up: --
- *
+ * @array: array to be sorted
+ * @down: direction down
+ * @up: direction pattern up
+ * @size: array size
  * Return: void
  */
 
-void quick_sort_recursive(int *array, int down, int up)
+void quick_sort_recursive(int *array, int down, int up, size_t size)
 {
 	if (down < up)
 	{
 		int pivot_index = lomu_partition(array, down, up, size);
-/**
- * 		printf("\n");
- * 		print_array(array, up + 1);
- */
+
 		quick_sort_recursive(array, down, pivot_index - 1, size);
 		quick_sort_recursive(array, pivot_index + 1, up, size);
 	}
